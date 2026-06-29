@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manga Translator VI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 320px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f0f13;
+      color: #e8e8f0;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 16px 20px;
+      border-bottom: 1px solid #2a2a4a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #6c63ff, #e040fb);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .header-text p {
+      font-size: 10px;
+      color: #888;
+      margin-top: 1px;
+    }
+
+    /* ── Body ── */
+    .body {
+      padding: 16px 20px;
+    }
+
+    /* ── Field group ── */
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    .field-group input,
+    .field-group textarea,
+    textarea {
+      width: 100%;
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: #ddd;
+      outline: none;
+      transition: border-color .2s;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    .field-group input:focus,
+    .field-group textarea:focus,
+    textarea:focus {
+      border-color: #6c63ff;
+    }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 8px;
+    }
+
+    /* ── Options ── */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .opt-card {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+
+    .opt-card:hover {
+      border-color: #6c63ff44;
+    }
+
+    .opt-card input {
+      display: none;
+    }
+
+    .opt-card.selected {
+      border-color: #6c63ff;
+      background: #1f1f3a;
+    }
+
+    .opt-card-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #ccc;
+    }
+
+    .opt-card-sub {
+      font-size: 10px;
+      color: #555;
+      margin-top: 2px;
+    }
+
+    /* ── Stats ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .stat-card {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 18px;
+      font-weight: 700;
+      color: #9c88ff;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      color: #555;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s, transform .1s;
+    }
+
+    .btn:active {
+      transform: scale(.97);
+    }
+
+    .btn:hover {
+      opacity: .85;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6c63ff, #e040fb);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      color: #999;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #1e1e30;
+      margin: 12px 0;
+    }
+
+    .queue-info {
+      font-size: 10px;
+      color: #444;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .queue-info span {
+      color: #6c63ff;
+    }
+
+    /* ── Hint banner ── */
+    .hint-banner {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 11px;
+      color: #777;
+      line-height: 1.5;
+    }
+
+    .hint-banner strong {
+      color: #a78bfa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="logo">📖</div>
+    <div class="header-text">
+      <h1>Manga Translator VI</h1>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Hint: toggle is now on page -->
+    <div class="hint-banner">
+      💡 Dùng nút <strong>⏻</strong> trên trang để bật/tắt dịch tự động.<br>
+      Nút <strong>▶</strong> để dịch ngay, nút <strong>👁</strong> để ẩn/hiện bản dịch.
+    </div>
+
+    <!-- Filter patterns -->
+    <div class="field-group">
+      <label>Filter patterns (mỗi dòng 1 pattern)</label>
+      <textarea id="filter-patterns" rows="3" placeholder="LunaToons.org&#10;MANGA18FX"></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Options -->
+    <div class="section-title">🎛️ Tùy chọn</div>
+    <div class="options-grid">
+      <label class="opt-card" id="opt-auto">
+        <input type="checkbox" id="opt-preload" checked>
+        <div class="opt-card-label">Preload 3 trang</div>
+        <div class="opt-card-sub">Tải trước khi scroll</div>
+      </label>
+      <label class="opt-card" id="opt-batch">
+        <input type="checkbox" id="opt-batch-chk" checked>
+        <div class="opt-card-label">Batch dịch</div>
+        <div class="opt-card-sub">Gộp text 1 request</div>
+      </label>
+      <label class="opt-card" id="opt-overlay">
+        <input type="checkbox" id="opt-show-overlay" checked>
+        <div class="opt-card-label">Hiện overlay</div>
+        <div class="opt-card-sub">Xóa text gốc</div>
+      </label>
+      <label class="opt-card" id="opt-debug">
+        <input type="checkbox" id="opt-show-debug">
+        <div class="opt-card-label">Debug boxes</div>
+        <div class="opt-card-sub">Viền bounding box</div>
+      </label>
+    </div>
+
+    <!-- Stats -->
+    <div class="section-title">📊 Phiên này</div>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-pages">0</div>
+        <div class="stat-label">Trang dịch</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-bubbles">0</div>
+        <div class="stat-label">Bubble</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-avg">—</div>
+        <div class="stat-label">Avg (s)</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-save">💾 Lưu cấu hình</button>
+      <button class="btn btn-secondary" id="btn-reset">↺ Reset trang</button>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-secondary" id="btn-clear-cache">🗑️ Xóa cache ảnh (<span id="cache-count">0</span>)</button>
+    </div>
+
+    <div class="queue-info">Hàng chờ: <span id="queue-count">0</span> ảnh đang xử lý</div>
+
+  </div>
+
+  <script src="src/config.js"></script>
+  <script src="src/popup.js"></script>
+</body>
+
+</html>
